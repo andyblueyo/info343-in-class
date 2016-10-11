@@ -1,0 +1,10 @@
+header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(../img/obama_hoops.jpg);
+    background-attachment: fixed;
+    background-size: 100px 200px;
+    background-repeat: repeat-x;
+}
+
+body {
+    color: #FFF;
+}
