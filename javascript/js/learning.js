@@ -198,12 +198,13 @@ console.group("PRACTICE: Arrays");
 //--PRACTICE--
 //create another array of playing card suits
 //(clubs, diamonds, hearts, spades)
+var suits = ["clubs", "diamonds", "hearts", "spades"];
 
 
 //then add a new element named "jokers"
 //afer adding it, access it in the array
 //and log it to the console
-
+suits.push("joker");
 
 
 console.groupEnd();
@@ -287,6 +288,7 @@ console.groupCollapsed("Functions");
 function reverseString(s) {
     var reversed = "";
     var idx;
+    s = String(s); // more defensive programming, only at higher lvl
     for (idx = s.length-1; idx >= 0; idx--) {
         //short form of reversed = reversed + s.charAt(idx)
         reversed += s.charAt(idx);
@@ -303,7 +305,7 @@ var fn = reverseString;
 console.log(fn("I'm also reversed!"));
 
 //or you can use an "anonymous" function wherever you can use a value
-var logMe = function(v) {
+var logMe = function(v) { // functions can be values
     var now = new Date();
     console.log(now.toLocaleString() + ": " + v);
 }
@@ -342,7 +344,18 @@ console.group("PRACTICE: Functions");
 //and returns the minimum of the two, or the first argument
 //if they are equal to each other. Then call it a few times
 //with various numbers to test it.
-
+function minimum(n1, n2) {
+    if (n1 > n2) {
+        return n2;
+    } else if (n1 < n2) {
+        return n1;
+    } else {
+        return n1;
+    }
+     //return n2 < n1 ? n2 : n1; // return question then colon
+}
+console.log("min is 10", minimum(10,11));
+console.log("min is 3", minimum(50,3));
 
 console.groupEnd();
 
@@ -417,6 +430,8 @@ function generateRandomNumbers(howMany, minimum, maximum) {
 }
 
 //>>> your code goes here!
+var randArray = generateRandomNumbers(5);
+randArray.forEach();
 
 
 //now use the .sort() method on a generated array of random
