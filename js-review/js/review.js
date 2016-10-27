@@ -91,7 +91,7 @@ function logValue(value, formatter) {
     //use it to format the value
     if (formatter) {
         value = formatter(value);
-    }
+    } // else no formatter parameter will not excecute parameter 
     console.log(value);
 }
 
@@ -109,7 +109,8 @@ logValue("2016-10-27", formatAsDate);
  */
 var someNumber = 123456789;
 //logValue(...)
-
+logValue(someNumber, formatAsNumber);
+logValue(someNumber, formatAsCurrency);
 
 
 
@@ -150,14 +151,14 @@ console.log("Alternative syntax: I'm taking", course[propName1], course[propName
 //you can also test if an object has a property already
 //using two different approaches:
 //first: use .hasOwnProperty()
-if (course.hasOwnProperty("title")) {
+if (course.hasOwnProperty("title")) { // will return true
     console.log(course.title);
 }
 //second: test the value for the property,
 //asking for a property that doesn't yet exist
 //in the HashMap will return `undefined`, which
 //will coerce to false
-if (course.foobar) {
+if (course.foobar) { // if key exists, null, key is false, will never run
     //this won't ever run because there is no
     //`foobar` key in the HashMap, so 
     //course.foobar returns undefined
@@ -190,12 +191,9 @@ console.log("property names:", propNames);
  * see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
  */
 
-
-
-
-
-
-
+propNames.forEach(function (loop) { // goes through array elements, obj keys
+    console.log(loop, "=", course[loop]);
+});
 
 //FYI, this is essentially how the .forEach()
 //method on arrays is implemented:
@@ -351,8 +349,19 @@ console.log("Total count", formatAsNumber(totalCount));
  * just reverse the logic in your compare function.
  */
 
+males.sort(function(record1, record2) {
+    return record2.count - record1.count;
+});
 
+var mostPopMaleNames = males.slice(0, 10);
+console.log("most popular male name", mostPopMaleNames);
+var mostPopMaleNames = mostPopMaleNames.map(function(rec){
+    return rec.name;
+});
 
+console.log("Most popular male names as array". mostPopMaleNames);
+console.log("most pop name as a single stitin");
+mostPopMaleNames.join(",");
 /**
  * PRACTICE
  * There are many names in the BABYNAMES array that

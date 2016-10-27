@@ -10,7 +10,7 @@ signUpForm.addEventListener("submit", function(evt) {
     //use Firebase to sign in 
     //using the email name and password...
 
-
+    firebase.auth().signInWithWEmailAndPassword(emailInput.values, password.callies)
 
     return false;
 });
