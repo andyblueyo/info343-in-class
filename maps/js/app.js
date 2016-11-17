@@ -23,7 +23,7 @@ var osmTiles = {
 //for a list of map styles supported by Mapbox, as well
 //as full documentation about their map tiles API
 var mapboxTiles = {
-    accessToken: "...paste your access token here...",
+    accessToken: "pk.eyJ1IjoiYWJjaGVuIiwiYSI6ImNpdmx0OWlyYTA1cHkydHF0MGlzbm1ucHYifQ.D9MNiWYtf8_w-FmdOtFutw",
     url: "https://api.tiles.mapbox.com/v4/{style}/{z}/{x}/{y}.png?access_token={accessToken}",
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
     styles: {
@@ -31,7 +31,8 @@ var mapboxTiles = {
         light: "mapbox.light",
         dark: "mapbox.dark",
         satellite: "mapbox.satellite",
-        pirates: "mapbox.pirates"
+        pirates: "mapbox.pirates",
+        comic: "mapbox.comic"
     }
 };
 
@@ -45,7 +46,56 @@ var seattle911API = "https://data.seattle.gov/resource/grwu-wqtk.json?$where=dat
 var mapDiv = document.getElementById("map");
 //coordinates for seattle [latitude, longitude]
 var seattleCoords = [47.61, -122.33];
+// east positive, west negative
+// north positive, south negative
 //default zoom level (0-18 for street maps)
 //other map styles may have different zoom ranges
 var defaultZoom = 13;
 
+var map = L.map(mapDiv).setView(seattleCoords, defaultZoom);
+L.tileLayer(mapboxTiles.url, {
+    attribution: mapboxTiles.attribution,
+    style: mapboxTiles.styles.comic,
+    accessToken: mapboxTiles.accessToken  
+}).addTo(map);
+
+function onPosition(position) {
+    console.log(position);
+    var latlng = [position.coords.latitude, position.coords.longitude];
+    var marker = L.marker(latlng).addTo(map);
+    map.panTo(latlng);
+}
+
+function onPositionError(err) {
+    console.error(err);
+    alert(err.message);
+}
+
+if (navigator && navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(onPosition, onPositionError, {enableHighAccuracy:true});
+}
+
+fetch(seattle911API) 
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data);
+        data.forEach(function(record) {
+            var latlng = [record.latitude, record.longitude];
+            var marker = L.circleMarker(latlng, {
+                fillColor:"#F00",
+                color: "#F00",
+                fillOpacity: 0.5
+            }).addTo(map);
+
+            var html = "<p>" + record.type + "</p>";
+            html += "<p>" + moment(record.datetime).format() + "</p>";
+            marker.bindPopup(html);
+
+        });
+    })
+    .catch(function(err) {
+        console.error(err);
+        alert(err.message);
+    });
